@@ -1,22 +1,16 @@
 #include <iostream>
 #include <Windows.h>
-
+#include "client.h"
 
 int main(int argc, const char **argv)
 {
 	std::cout << "Connecting to server" << std::endl;
 
-	HANDLE pipe = CreateFile(
-		"\\\\.\\pipe\\my_pipe",
-		GENERIC_READ,
-		FILE_SHARE_READ | FILE_SHARE_WRITE,
-		NULL,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL
-	);
+	std::shared_ptr<client::client> client_sptr = std::make_shared<client::client>();
+	
+	bool success = client_sptr->CreatePipe();
 
-	if (pipe == INVALID_HANDLE_VALUE)
+	if (!success)
 	{
 		std::cout << "Failed to connect to the server :: " << GetLastError() << std::endl;
 		system(" pause");
@@ -27,8 +21,7 @@ int main(int argc, const char **argv)
 
 	wchar_t buffer[128];
 	DWORD numBytesRead = 0;
-	BOOL result = ReadFile(
-		pipe,
+	BOOL result = client_sptr->Read(
 		buffer,
 		127 * sizeof(wchar_t),
 		&numBytesRead,
@@ -46,7 +39,7 @@ int main(int argc, const char **argv)
 		std::cout << "Failed to read data from the pipe" << std::endl;
 	}
 
-	CloseHandle(pipe);
+	client_sptr->ClosePipe();
 
 	std::cout << "Exiting..." << std::endl;
 	system("pause");
