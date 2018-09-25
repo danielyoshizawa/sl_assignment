@@ -1,35 +1,23 @@
 #include <iostream>
 #include <Windows.h>
+#include "server.h"
 
 int main(int argc, const char **argv)
 {
 	std::cout << "Starting Named Pipe Server" << std::endl;
 
-	HANDLE pipe = CreateNamedPipe(
-		"\\\\.\\pipe\\my_pipe",
-		PIPE_ACCESS_OUTBOUND,
-		PIPE_TYPE_BYTE,
-		1,
-		0,
-		0,
-		0,
-		NULL
-	);
+	std::shared_ptr<server::server> server_sptr = std::make_shared<server::server>();
 
-	if (pipe == NULL || pipe == INVALID_HANDLE_VALUE)
-	{
-		std::cout << "Failed to create pipe :: " << GetLastError() << std::endl;
-		system("pause");
-		return 1;
-	}
+	server_sptr->CreatePipe();
 
 	std::cout << "Waiting client" << std::endl;
 
-	BOOL result = ConnectNamedPipe(pipe, NULL);
+	BOOL result = server_sptr->ConnectClient();
+
 	if (!result)
 	{
 		std::cout << "Failed to connect :: " << GetLastError() << std::endl;
-		CloseHandle(pipe);
+		server_sptr->ClosePipe();
 		system("pause");
 		return 1;
 	}
@@ -37,13 +25,13 @@ int main(int argc, const char **argv)
 	std::cout << "Sending data" << std::endl;
 	const wchar_t *data = L"*** Hello pipe ***";
 	DWORD numBytesWritten = 0;
-	result = WriteFile(
-		pipe,
-		data,
-		wcslen(data),
-		&numBytesWritten,
-		NULL
-	);
+
+	result = server_sptr->Write(
+								(LPVOID)data,
+								wcslen(data),
+								&numBytesWritten,
+								NULL
+								);
 
 	if (result)
 	{
@@ -54,7 +42,7 @@ int main(int argc, const char **argv)
 		std::cout << "Failed to send data :: " << GetLastError() << std::endl;
 	}
 
-	CloseHandle(pipe);
+	server_sptr->ClosePipe();
 
 	std::cout << "Exiting..." << std::endl;
 	system("pause");
