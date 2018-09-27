@@ -4,6 +4,7 @@ set(
 	SOURCE
 		server.cpp
 		custom.cpp
+		interpreter.cpp
 		main.cpp
 	)
 
