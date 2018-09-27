@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include "client.h"
+#include <string>
 
 int main(int argc, const char **argv)
 {
@@ -17,32 +18,29 @@ int main(int argc, const char **argv)
 		return 1;
 	}
 
-	std::cout << "Reading data from server" << std::endl;
+	std::cout << "Sending data" << std::endl;
+	const wchar_t *data = L"StreamLabs";
+	DWORD numBytesWritten = 0;
 
-	wchar_t buffer[128];
-	DWORD numBytesRead = 0;
-	BOOL result = client_sptr->Read(
-		buffer,
-		127 * sizeof(wchar_t),
-		&numBytesRead,
+	BOOL result = client_sptr->Write(
+		(LPVOID)data,
+		wcslen(data),
+		&numBytesWritten,
 		NULL
 	);
 
 	if (result)
 	{
-		buffer[numBytesRead / sizeof(wchar_t)] = '\0';
-		std::cout << "Number of bytes read: " << numBytesRead << std::endl;
-		std::cout << "Message : " << buffer << std::endl;
+		std::cout << "Number of bytes sent : " << numBytesWritten << std::endl;
 	}
 	else
 	{
-		std::cout << "Failed to read data from the pipe" << std::endl;
+		std::cout << "Failed to send data :: " << GetLastError() << std::endl;
 	}
 
 	client_sptr->ClosePipe();
 
 	std::cout << "Exiting..." << std::endl;
-	system("pause");
 
 	return 0;
 }

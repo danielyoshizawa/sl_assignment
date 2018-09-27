@@ -16,6 +16,7 @@ namespace client
 		bool CreatePipe();
 		int ClosePipe();
 		int Read(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped);
+		int Write(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped);
 	private:
 		bool isPipeValid();
 	};

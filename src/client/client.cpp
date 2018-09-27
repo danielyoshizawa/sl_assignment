@@ -17,7 +17,7 @@ namespace client
 	{
 		pipe = CreateFile(
 			"\\\\.\\pipe\\my_pipe",
-			GENERIC_READ,
+			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
 			NULL,
 			OPEN_EXISTING,
@@ -42,6 +42,23 @@ namespace client
 		}
 
 		return ReadFile(
+			pipe,
+			buffer,
+			numberOfBytesToRead,
+			numberOfBytesRead,
+			overlapped
+		);
+	}
+
+	int client::Write(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
+	{
+		if (!isPipeValid())
+		{
+			std::cout << "Invalid Pipe : Creation is required." << std::endl;
+			return 1;
+		}
+
+		return WriteFile(
 			pipe,
 			buffer,
 			numberOfBytesToRead,

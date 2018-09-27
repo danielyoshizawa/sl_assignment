@@ -17,8 +17,8 @@ namespace server
 	{
 		pipe = CreateNamedPipe(
 			"\\\\.\\pipe\\my_pipe",
-			PIPE_ACCESS_OUTBOUND,
-			PIPE_TYPE_BYTE,
+			PIPE_ACCESS_DUPLEX,
+			PIPE_TYPE_MESSAGE,
 			1,
 			0,
 			0,
@@ -43,6 +43,23 @@ namespace server
 	int server::ClosePipe()
 	{
 		return CloseHandle(pipe);
+	}
+
+	int server::Read(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
+	{
+		if (!isPipeValid())
+		{
+			std::cout << "Invalid Pipe : Creation is required." << std::endl;
+			return 1;
+		}
+
+		return ReadFile(
+			pipe,
+			buffer,
+			numberOfBytesToRead,
+			numberOfBytesRead,
+			overlapped
+		);
 	}
 
 	int server::Write(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)

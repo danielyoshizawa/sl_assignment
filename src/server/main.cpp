@@ -22,29 +22,31 @@ int main(int argc, const char **argv)
 		return 1;
 	}
 
-	std::cout << "Sending data" << std::endl;
-	const wchar_t *data = L"*** Hello pipe ***";
-	DWORD numBytesWritten = 0;
+	std::cout << "Reading data from client" << std::endl;
 
-	result = server_sptr->Write(
-								(LPVOID)data,
-								wcslen(data),
-								&numBytesWritten,
-								NULL
-								);
+	wchar_t buffer[1024];
+	DWORD numBytesRead = 0;
+	result = server_sptr->Read(
+		buffer,
+		1023 * sizeof(wchar_t),
+		&numBytesRead,
+		NULL
+	);
 
 	if (result)
 	{
-		std::cout << "Number of bytes sent : " << numBytesWritten << std::endl;
+		buffer[numBytesRead / sizeof(wchar_t)] = '\0';
+		std::cout << "Number of bytes read: " << numBytesRead << std::endl;
+		std::wcout << "Message : " << buffer << std::endl;
 	}
 	else
 	{
-		std::cout << "Failed to send data :: " << GetLastError() << std::endl;
+		std::cout << "Failed to read data from the pipe" << std::endl;
 	}
 
 	server_sptr->ClosePipe();
 
 	std::cout << "Exiting..." << std::endl;
-	system("pause");
+
 	return 0;
 }
