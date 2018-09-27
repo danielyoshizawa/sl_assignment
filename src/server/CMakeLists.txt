@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.3)
 set(
 	SOURCE
 		server.cpp
+		custom.cpp
 		main.cpp
 	)
 
