@@ -16,7 +16,7 @@ namespace client
 	bool client::CreatePipe()
 	{
 		pipe = CreateFile(
-			"\\\\.\\pipe\\my_pipe",
+			"\\\\.\\pipe\\sl_pipe",
 			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
 			NULL,
@@ -33,7 +33,7 @@ namespace client
 		return CloseHandle(pipe);
 	}
 
-	int client::Read(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
+	int client::Read(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
 	{
 		if (!isPipeValid())
 		{
@@ -50,7 +50,7 @@ namespace client
 		);
 	}
 
-	int client::Write(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
+	int client::Write(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
 	{
 		if (!isPipeValid())
 		{

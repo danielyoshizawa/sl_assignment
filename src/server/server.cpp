@@ -16,13 +16,13 @@ namespace server
 	bool server::CreatePipe()
 	{
 		pipe = CreateNamedPipe(
-			"\\\\.\\pipe\\my_pipe",
-			PIPE_ACCESS_DUPLEX,
-			PIPE_TYPE_MESSAGE,
+			"\\\\.\\pipe\\sl_pipe",
+			PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,
+			PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE,
 			1,
-			0,
-			0,
-			0,
+			4096,
+			4096,
+			200,
 			NULL
 		);
 
@@ -45,7 +45,7 @@ namespace server
 		return CloseHandle(pipe);
 	}
 
-	int server::Read(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
+	int server::Read(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
 	{
 		if (!isPipeValid())
 		{
@@ -62,7 +62,7 @@ namespace server
 		);
 	}
 
-	int server::Write(LPVOID buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
+	int server::Write(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped)
 	{
 		if (!isPipeValid())
 		{

@@ -8,11 +8,16 @@ namespace custom
 
 	}
 
-	custom::custom()
+	custom::custom(std::string name, std::string message):name(name), message(message)
 	{
 
 	}
 	
+	custom::custom() : name(""), message("")
+	{
+
+	}
+
 	void custom::printInfo()
 	{
 		std::cout << " :: Info about custom object :: " << std::endl;
