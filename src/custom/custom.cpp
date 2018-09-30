@@ -20,9 +20,11 @@ namespace custom
 
 	void custom::printInfo()
 	{
-		std::cout << " :: Info about custom object :: " << std::endl;
-		std::cout << " :: Name : " << name << " :: " << std::endl;
-		std::cout << " :: Message : " << message << " :: " << std::endl;
+		std::cout << "\n::::::::::::::::::::::::::::::::::::::::::::::::::::::" << std::endl;
+		std::cout << ":: Info about custom object" << std::endl;
+		std::cout << ":: Name : " << name  << std::endl;
+		std::cout << ":: Message : " << message  << std::endl;
+		std::cout << "::::::::::::::::::::::::::::::::::::::::::::::::::::::\n" << std::endl;
 	}
 
 	void custom::setName(const std::string & _name)
