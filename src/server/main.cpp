@@ -1,16 +1,17 @@
-#define NOMINMAX
-#include "manager.h"
+#include "server.h"
+#include <iostream>
 
 int main(int argc, const char **argv)
 {
 	try
 	{
-		std::unique_ptr<server::manager> manager(new server::manager());
-		manager->start();
+		std::unique_ptr<server::Server> server(new server::Server("SERVER"));
+		server->Start();
+		server->Run();
 	}
-	catch (...)
+	catch (std::exception & ex)
 	{
-		std::cout << "Some exception happened, somewhere, somehow" << std::endl;
+		std::cout << "Exception : " << ex.what() << std::endl;
 	}
 
 	return 0;

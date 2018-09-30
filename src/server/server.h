@@ -1,24 +1,27 @@
 #pragma once
 #ifndef SERVER_H
+#define SERVER_H
 
-#include "Windows.h"
+#include <string>
+#include "common.h"
+#include "processor.h"
 
 namespace server
 {
-	class server
+	class Server
 	{
 	private:
-		HANDLE pipe;
+		std::string name;
+		std::shared_ptr<Processor> processor;
 	public:
-		virtual ~server();
-		server();
-		bool CreatePipe();
-		int ConnectClient();
-		int ClosePipe();
-		int Read(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped);
-		int Write(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped);
+		virtual ~Server() {};
+		Server(const std::string & name);
+		int Start();
+		int Run();
 	private:
-		bool isPipeValid();
+		VOID DisconnectAndReconnect(DWORD);
+		BOOL ConnectToNewClient(HANDLE, LPOVERLAPPED);
+		VOID GetAnswerToRequest(LPPIPEINST);
 	};
 };
 
