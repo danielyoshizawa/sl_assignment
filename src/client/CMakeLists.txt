@@ -9,7 +9,7 @@ add_executable(client ${SOURCE})
 
 target_include_directories(client PRIVATE 
 										${CMAKE_SOURCE_DIR}/src/client
-										${CMAKE_SOURCE_DIR}/src/message
+										${CMAKE_SOURCE_DIR}/src/common
 						  )
 
 target_link_libraries(client custom)
