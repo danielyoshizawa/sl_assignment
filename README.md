@@ -4,24 +4,24 @@
 
 ### Build
 
-	```
-	mkdir build
-	cd build
-	cmake ..
-	cmake --build .
-	```
+```
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
 
 ### Running
-	```
-	<path/to/build>/bin/<Debug|Release>/server.exe
-	<path/to/build>/bin/<Debug|Release>/client.exe
-	```
+```
+<path/to/build>/bin/<Debug|Release>/server.exe
+<path/to/build>/bin/<Debug|Release>/client.exe
+```
 
 	For a load test pass --multi to client.exe as argument
 
-	```
-	<path/to/build>/bin/<Debug|Release>/client.exe --multi
-	```
+```
+<path/to/build>/bin/<Debug|Release>/client.exe --multi
+```
 
 ## Built With
 
