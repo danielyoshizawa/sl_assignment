@@ -18,15 +18,15 @@ namespace client
 		client(const std::string & name);
 		int Start();
 		int ClosePipe();
-		void PrintMessage(const std::string & message);
-		void CreateCustom(const std::string & name, const std::string & message);
-		void CustomsList();
-		void RetrieveCustom(const std::string & name);
+		void PrintMessage(const std::string & message, bool async = false);
+		void CreateCustom(const std::string & name, const std::string & message, bool async = false);
+		void CustomsList(bool async = false);
+		void RetrieveCustom(const std::string & name, bool async = false);
 	private:
 		int createPipe();
 		bool isPipeValid();
 		void sendSync(const message::message & messageToSend, message::message & messageReceived);
-		void sendAscync(const message::message & message);
+		void sendAsync(const message::message & messageToSend, message::message & messageReceived);
 		int read(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped);
 		int write(void * buffer, DWORD numberOfBytesToRead, LPDWORD numberOfBytesRead, LPOVERLAPPED overlapped);
 	};
